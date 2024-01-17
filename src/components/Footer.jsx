@@ -2,7 +2,7 @@ import React from 'react'
 
 const Footer = () => {
   return (
-    <div className="flex flex-col justify-between bg-[#ec8841] text-black font-bold text-lg h-[50vh] px-60 py-10">
+    <div className="flex flex-col justify-between bg-[#ec8841] text-black font-bold text-lg h-[50vh] px-60 py-10 ">
         <div className='flex justify-between '>
         <ul className=''>
                 <p className='font-w-700 font-bold text-2xl' >Company</p>
