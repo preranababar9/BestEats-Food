@@ -1,14 +1,34 @@
 import React, { useState } from 'react';
 import { data } from '../data/data.js';
+import { useEffect } from 'react';
+import {query, collection, onSnapshot, QuerySnapshot } from 'firebase/firestore';
+import { db } from '../firebase/config.js';
+
 
 const Food = () => {
   //   console.log(data);
-  const [foods, setFoods] = useState(data);
+  const [foods, setFoods] = useState([]);
+
+  useEffect(() => {
+    const product_q = query(collection(db, "fooditems"));
+    const unsub = onSnapshot(product_q, (QuerySnapshot) => {
+      let prodArr = [];
+      QuerySnapshot.forEach((doc) => {
+        prodArr.push({ ...doc.data(), id: doc.id });
+      });
+      setFoods(prodArr);
+    });
+
+    return () => {
+      unsub();
+    };
+  }, []);
+  console.log(foods);
 
   //   Filter Type burgers/pizza/etc
   const filterType = (category) => {
     setFoods(
-      data.filter((item) => {
+      foods.filter((item) => {
         return item.category === category;
       })
     );
@@ -17,7 +37,7 @@ const Food = () => {
   //   Filter by price
   const filterPrice = (price) => {
     setFoods(
-      data.filter((item) => {
+      foods.filter((item) => {
         return item.price === price;
       })
     );
@@ -36,7 +56,7 @@ const Food = () => {
           <p className='font-bold text-gray-700'>Filter Type</p>
           <div className='flex justfiy-between flex-wrap'>
             <button
-              onClick={() => setFoods(data)}
+              onClick={() => setFoods(foods)}
               className='m-1 border-orange-600 text-orange-600 hover:bg-orange-600 hover:text-white'
             >
               All
