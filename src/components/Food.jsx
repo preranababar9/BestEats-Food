@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { data } from '../data/data.js';
 import { useEffect } from 'react';
 import {query, collection, onSnapshot, QuerySnapshot } from 'firebase/firestore';
 import { db } from '../firebase/config.js';
@@ -8,6 +7,7 @@ import { db } from '../firebase/config.js';
 const Food = () => {
   //   console.log(data);
   const [foods, setFoods] = useState([]);
+  const[data, setdata] = useState([]);
 
   useEffect(() => {
     const product_q = query(collection(db, "fooditems"));
@@ -17,18 +17,21 @@ const Food = () => {
         prodArr.push({ ...doc.data(), id: doc.id });
       });
       setFoods(prodArr);
+
+       setdata(prodArr) ;
     });
 
     return () => {
       unsub();
     };
   }, []);
-  console.log(foods);
+  console.log(data);
 
   //   Filter Type burgers/pizza/etc
   const filterType = (category) => {
     setFoods(
-      foods.filter((item) => {
+      data.filter((item) => {
+        console.log(item.category)
         return item.category === category;
       })
     );
@@ -37,7 +40,7 @@ const Food = () => {
   //   Filter by price
   const filterPrice = (price) => {
     setFoods(
-      foods.filter((item) => {
+    data.filter((item) => {
         return item.price === price;
       })
     );
